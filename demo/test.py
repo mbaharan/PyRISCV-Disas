@@ -2,7 +2,7 @@ from pyriscv_disas import Inst, rv_disas
 
 if __name__ == "__main__": 
 
-   '''
+    '''
         81686:	1101                	addi	sp,sp,-32
         81688:	e426                	sd	s1,8(sp)
         8168a:	e822                	sd	s0,16(sp)
@@ -27,7 +27,8 @@ if __name__ == "__main__":
         816c6:	64a2                	ld	s1,8(sp)
         816c8:	6105                	addi	sp,sp,32
         816ca:	8082                	ret
-   '''
+    '''
+
     inst_arr = [0x1101, 0xe426, 0xe822, 0xd581b403, 0xec06, 0xc805, 0x7008, 0xc519, 0x892de0ef, 0xd581b403, 0x02043023, 0x6808, 0xef9d80ef, 
                 0xd581b503, 0x00043423, 0x00043023, 0x00043823, 0xee5d80ef, 0xd401bc23, 0x60e2, 0x6442, 0x64a2, 0x6105, 0x8082]
     machine = rv_disas(PC=0x81686)
