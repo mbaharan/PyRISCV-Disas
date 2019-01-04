@@ -887,6 +887,10 @@ def decompress_inst_rv128(dec: 'rv_decode') -> "void":
     return _riscv_disas.decompress_inst_rv128(dec)
 decompress_inst_rv128 = _riscv_disas.decompress_inst_rv128
 
+def get_opcode_data(idx: 'int') -> "rv_opcode_data const *":
+    return _riscv_disas.get_opcode_data(idx)
+get_opcode_data = _riscv_disas.get_opcode_data
+
 def disasm_inst(buf: 'char *', buflen: 'size_t', isa: 'rv_isa', pc: 'uint64_t', inst: 'rv_inst') -> "void":
     return _riscv_disas.disasm_inst(buf, buflen, isa, pc, inst)
 disasm_inst = _riscv_disas.disasm_inst

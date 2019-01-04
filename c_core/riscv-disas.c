@@ -2343,6 +2343,14 @@ static void decompress_inst_rv128(rv_decode *dec)
     }
 }
 
+
+//INFO: Added by Reza Baharani
+static const rv_opcode_data * get_opcode_data(int idx)
+{
+    rv_opcode_data * tmp = opcode_data + idx;
+    return tmp;
+}
+
 /* disassemble instruction */
 
 void disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst)

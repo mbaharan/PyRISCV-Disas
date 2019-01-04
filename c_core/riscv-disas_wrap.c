@@ -7655,6 +7655,28 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_get_opcode_data(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  rv_opcode_data *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:get_opcode_data",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "get_opcode_data" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = (int)(val1);
+  result = (rv_opcode_data *)get_opcode_data(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_rv_opcode_data, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_disasm_inst(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   char *arg1 = (char *) 0 ;
@@ -7987,6 +8009,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "decompress_inst_rv32", _wrap_decompress_inst_rv32, METH_VARARGS, NULL},
 	 { "decompress_inst_rv64", _wrap_decompress_inst_rv64, METH_VARARGS, NULL},
 	 { "decompress_inst_rv128", _wrap_decompress_inst_rv128, METH_VARARGS, NULL},
+	 { "get_opcode_data", _wrap_get_opcode_data, METH_VARARGS, NULL},
 	 { "disasm_inst", _wrap_disasm_inst, METH_VARARGS, NULL},
 	 { "new_bufArray", _wrap_new_bufArray, METH_VARARGS, NULL},
 	 { "delete_bufArray", _wrap_delete_bufArray, METH_VARARGS, NULL},

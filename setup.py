@@ -11,11 +11,13 @@ module_lib_riscv_disas = Extension(
       ]
 )
 setup (
-      name = 'riscv_disas',
-      version = '0.1',
+      name = 'PyRiscv_disas',
+      version = '0.2',
       author = "Reza Baharani",
-      description = "Python binding for RISC-V Disassembler",
-      packages= find_packages(where = 'src/riscv-disas'),
-      package_dir = {'':'src/riscv-disas'},
+      author_email="mbaharan (at) uncc.edu",
+      license="MIT",
+      description = "Python binding for RISC-V disassembler",
+      packages= ['pyriscv_disas'],
+      package_dir = {'':'./src/'},
       ext_modules=[module_lib_riscv_disas]
 )
