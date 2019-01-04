@@ -1,8 +1,8 @@
 from pyriscv_disas import Inst, rv_disas
 
-if __name__ == "__main__":
+if __name__ == "__main__": 
 
-    '''
+   '''
         81686:	1101                	addi	sp,sp,-32
         81688:	e426                	sd	s1,8(sp)
         8168a:	e822                	sd	s0,16(sp)
@@ -35,6 +35,7 @@ if __name__ == "__main__":
     for ins in inst_arr:
         decd_inst = machine.disassemble(ins)
         print(decd_inst.format())
-        print('\t Read Registers:' + str(decd_inst.read_access))
-        print('\t Write Registers:' + str(decd_inst.write_access))
+        print('\t Read Registers  : ' + str(decd_inst.read_access))
+        print('\t Write Registers : ' + str(decd_inst.write_access))
+        print('\t Instruction type: ' + decd_inst.fmt_type)
         print('------------------------')

@@ -6,15 +6,63 @@ decompress_inst = {
     rv128: decompress_inst_rv128
 }
 
+unconditional_branches = [rv_op_ret, rv_op_jr, rv_op_jal, rv_op_jalr, rv_op_ecall, rv_op_ebreak, rv_op_uret, 
+                          rv_op_sret, rv_op_hret, rv_op_mret, rv_op_dret, rv_op_c_jal, rv_op_c_j,
+                          rv_op_c_jr, rv_op_c_ebreak, rv_op_c_jalr, rv_op_j]
+
+conditional_branches = [rv_op_beqz, rv_op_bnez, rv_op_bltz, rv_op_bgtz, rv_op_bgt, rv_op_blez, rv_op_bgez, rv_op_ble,
+                        rv_op_bgtu, rv_op_bleu, rv_op_beq, rv_op_bne, rv_op_blt, rv_op_bge, rv_op_bltu, rv_op_bgeu,
+                        rv_op_c_beqz, rv_op_c_bnez]
+
+load_instructions = [rv_op_lui, rv_op_lb, rv_op_lh, rv_op_lw, rv_op_lbu, rv_op_lhu, rv_op_lwu, rv_op_ld, rv_op_ldu, rv_op_lq,
+                     rv_op_lr_w, rv_op_lr_d, rv_op_lr_q, rv_op_flw, rv_op_fld, rv_op_flq, rv_op_c_fld, rv_op_c_lw, rv_op_c_flw, rv_op_c_li,
+                     rv_op_c_lui, rv_op_c_fldsp, rv_op_c_lwsp, rv_op_c_flwsp, rv_op_c_ld, rv_op_c_ldsp, rv_op_c_lq, rv_op_c_lqsp]
+
+store_instructions = [rv_op_sb, rv_op_sh, rv_op_sw, rv_op_sd, rv_op_sq, rv_op_sc_w, rv_op_sc_d, rv_op_sc_q, rv_op_fsw, rv_op_fsd,
+                      rv_op_fsq, rv_op_c_fsd, rv_op_c_sw, rv_op_c_fsw, rv_op_c_fsdsp, rv_op_c_swsp, rv_op_c_fswsp, rv_op_c_sd, 
+                      rv_op_c_sdsp, rv_op_c_sqsp, rv_op_c_sq]
+
+synch_instruction = [rv_op_fence, rv_op_fence_i, rv_op_sfence_vm, rv_op_sfence_vma]
+
+
+
+
+
 class Inst(rv_decode):
+    '''
+        I defined these four catagories for my own purpose:
+            0. R(egister) -> Register type (Doing nothing with outside)
+            1. M(emory)   -> Memories instructions (load and store)
+            3. C(ontrol)  -> Branches (Conditional and Unconditional)
+            4. S(ynch)    -> Fence instructions
+    '''
+    instruction_type = {
+        -1: "Illigal",
+        0: "R",
+        1: "M",
+        2: "C",
+        3: "S"
+    }
+
     def __init__(self):
         super().__init__()
         self.src_register = set()
         self.dest_register = set()
         self.analyzed = False
+        self.type = -1
 
     def anlz_accesses(self):
-        fmt = get_opcode_data(self.op).format
+        metadata = get_opcode_data(self.op)
+        fmt = metadata.format
+
+        if (self.op in unconditional_branches or self.op in conditional_branches):
+            self.type = 2 # It is a control instruction
+        elif (self.op in store_instructions or self.op in load_instructions):
+            self.type = 1
+        elif self.op in synch_instruction:
+            self.op = 3
+        elif self.op != 0:
+            self.type = 0
 
         if fmt == rv_fmt_none: # 1
             pass
@@ -127,6 +175,12 @@ class Inst(rv_decode):
         if not self.analyzed:
             self.anlz_accesses()
         return self.src_register
+    
+    @property
+    def fmt_type(self):
+        if not self.analyzed:
+            self.anlz_accesses()
+        return Inst.instruction_type[self.type]
 
     def format(self, str_buffer_size = 128, tab_size = 32):
         buf = bufArray(str_buffer_size)
@@ -199,6 +253,7 @@ if __name__ == "__main__":
     for ins in inst_arr:
         decd_inst = machine.disassemble(ins)
         print(decd_inst.format())
-        print('\t Read Registers:' + str(decd_inst.read_access))
-        print('\t Write Registers:' + str(decd_inst.write_access))
+        print('\t Read Registers  : ' + str(decd_inst.read_access))
+        print('\t Write Registers : ' + str(decd_inst.write_access))
+        print('\t Instruction type: ' + decd_inst.fmt_type)
         print('------------------------')
